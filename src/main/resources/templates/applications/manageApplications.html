@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Управление Откликами</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f3f2f8; /* светлый фиолетовый фон */
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .application-card {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+        .btn-primary {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        .btn-primary:hover {
+            background-color: #563d7c; /* темно-фиолетовый фон при наведении */
+            border-color: #563d7c;
+        }
+        .btn-link {
+            color: #6f42c1; /* фиолетовый цвет ссылок */
+            text-decoration: none;
+        }
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mb-4">Управление Откликами</h1>
+    <div th:each="app : ${applications}" class="application-card">
+        <p>
+            Вакансия: <a th:text="${app.job.title}" th:href="@{/jobs/edit/{id}(id=${app.job.id})}" class="btn btn-link"></a><br/>
+            Кандидат: <a th:text="${app.user.username}" th:href="@{/profile/{id}(id=${app.user.id})}" class="btn btn-link"></a><br/>
+            Текущий статус: <span th:text="${app.appStatus}"></span>
+        <form th:action="@{/applications/update/{applicationId}(applicationId=${app.id})}" method="post" class="mt-2">
+            <div class="mb-3">
+                <label for="status">Статус:</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="PENDING">В ожидании</option>
+                    <option value="INVITED">Приглашён</option>
+                    <option value="REJECTED">Отклонён</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Обновить статус</button>
+        </form>
+        </p>
+    </div>
+    <a href="/jobs/myjobs" class="btn btn-primary">Вернуться к моим вакансиям</a>
+</div>
+</body>
+</html>
